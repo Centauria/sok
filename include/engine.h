@@ -1,5 +1,9 @@
 #pragma once
+#ifdef APPLE
+#include <SDL.h>
+#else
 #include <SDL2/SDL.h>
+#endif
 #include "gamemap.h"
 
 class SDL2Engine

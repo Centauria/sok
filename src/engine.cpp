@@ -3,11 +3,11 @@
 #define SCREEN_WIDTH 1280
 #define SCREEN_HEIGHT 720
 
-SDL2Engine ::SDL2Engine(/* args */)
+SDL2Engine::SDL2Engine(/* args */)
 {
 }
 
-SDL2Engine ::~SDL2Engine()
+SDL2Engine::~SDL2Engine()
 {
 }
 
@@ -25,7 +25,8 @@ void SDL2Engine::init()
         exit(1);
     }
 
-    window = SDL_CreateWindow("Shooter 01", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, windowFlags);
+    window = SDL_CreateWindow("Shooter 01", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH,
+                              SCREEN_HEIGHT, windowFlags);
 
     if (!window)
     {
@@ -60,7 +61,7 @@ void SDL2Engine::run()
             switch (event.type)
             {
             case SDL_QUIT:
-                exit(0);
+                is_running = false;
                 break;
             case SDL_KEYUP:
                 switch (SDL_GetScancodeFromKey(event.key.keysym.sym))
@@ -76,6 +77,8 @@ void SDL2Engine::run()
                     break;
                 case SDL_SCANCODE_D:
                     world.take(Action::Right);
+                    break;
+                default:
                     break;
                 }
             default:
