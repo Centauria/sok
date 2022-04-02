@@ -1,11 +1,12 @@
 #pragma once
+
 #ifdef APPLE
 #include <SDL.h>
 #else
 #include <SDL2/SDL.h>
 #endif
-#include <string>
 #include "array.hpp"
+#include <string>
 
 #define HEIGHT 8
 #define WIDTH 8
@@ -37,11 +38,11 @@ private:
     array<int[8][8]> data;
 
 public:
-    World(std::string);
+    explicit World(std::string);
     ~World();
     std::vector<int> getPlayerPos();
     void take(Action);
     void print();
-    SDL_Rect* cellRect(int, int, int, int);
-    void render(SDL_Renderer*, int, int);
+    static SDL_Rect *cellRect(int, int, int, int);
+    void render(SDL_Renderer *, int, int);
 };
