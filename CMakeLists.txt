@@ -36,10 +36,8 @@ target_link_libraries(sok SDL2::Main)
 target_include_directories(sok PUBLIC include)
 target_compile_definitions(sok PRIVATE LITE_ARRAY_NO_HINT NDEBUG)
 
-if(WIN32)
-  add_custom_command(
+add_custom_command(
     TARGET ${PROJECT_NAME}
     POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/maps
-            $<TARGET_FILE_DIR:${PROJECT_NAME}>/maps)
-endif()
+    $<TARGET_FILE_DIR:${PROJECT_NAME}>/maps)
