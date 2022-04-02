@@ -1,12 +1,13 @@
 #pragma once
 
-#ifdef APPLE
+#if defined(APPLE) || defined(WIN32)
 #include <SDL.h>
 #else
 #include <SDL2/SDL.h>
 #endif
 #include "array.hpp"
 #include <string>
+#include <vector>
 
 #define HEIGHT 8
 #define WIDTH 8
