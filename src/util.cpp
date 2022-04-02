@@ -39,11 +39,11 @@ std::string file_contents(const std::filesystem::path &path)
 std::vector<std::string> split(const std::string &str, const std::string &delim)
 {
     std::vector<std::string> res;
-    if (str == "")
+    if (str.empty())
         return res;
     std::string strs = str + delim;
     size_t pos = strs.find(delim);
-    while (pos != strs.npos)
+    while (pos != std::string::npos)
     {
         auto temp = strs.substr(0, pos);
         res.push_back(temp);
