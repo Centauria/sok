@@ -77,6 +77,8 @@ void SDL2Engine::run()
                 case SDL_SCANCODE_D:
                     world.take(Action::Right);
                     break;
+                default:
+                    break;
                 }
             default:
                 break;
