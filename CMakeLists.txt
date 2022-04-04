@@ -13,14 +13,6 @@ add_compile_options("$<$<CXX_COMPILER_ID:MSVC>:/utf-8>")
 
 add_compile_definitions("_THREAD_SAFE")
 
-if(APPLE)
-    add_compile_definitions(APPLE)
-endif()
-
-if(MSVC)
-    add_compile_definitions(MSVC)
-endif()
-
 find_package(SDL2 REQUIRED)
 
 add_executable(sok

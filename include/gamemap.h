@@ -1,10 +1,6 @@
 #pragma once
 
-#if defined(APPLE) || defined(MSVC)
 #include <SDL.h>
-#else
-#include <SDL2/SDL.h>
-#endif
 #include "array.hpp"
 #include <string>
 #include <vector>
