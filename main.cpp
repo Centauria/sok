@@ -2,7 +2,9 @@
 #include "engine.h"
 #include "gamemap.h"
 
-int main(int, char **)
+#undef main //This line is for GCC on Windows
+
+int main(int argc, char *argv[])
 {
     SDL2Engine engine{};
     engine.init();

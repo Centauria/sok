@@ -1,5 +1,6 @@
 #pragma once
-#ifdef APPLE
+
+#if defined(APPLE) || defined(WIN32)
 #include <SDL.h>
 #else
 #include <SDL2/SDL.h>
@@ -9,7 +10,7 @@
 class SDL2Engine
 {
 private:
-    World world{"../maps/1.txt"};
+    World world{"maps/1.txt"};
     SDL_Window *window;
     SDL_Renderer *renderer;
 
