@@ -34,7 +34,7 @@ private:
     int width{};
 
 public:
-    explicit World(std::string);
+    explicit World(const std::string &);
     ~World();
     std::vector<int> getPlayerPos();
     void take(Action);
