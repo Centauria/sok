@@ -1,6 +1,6 @@
 #pragma once
 
-#if defined(APPLE) || defined(WIN32)
+#if defined(APPLE) || defined(MSVC)
 #include <SDL.h>
 #else
 #include <SDL2/SDL.h>
