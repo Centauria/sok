@@ -6,7 +6,7 @@
 class SDL2Engine
 {
 private:
-    World world{"maps/1.txt"};
+    World world{"maps/2.txt"};
     SDL_Window *window;
     SDL_Renderer *renderer;
 

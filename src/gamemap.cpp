@@ -5,8 +5,6 @@
 #include <vector>
 
 
-using namespace lite;
-
 World::World(const std::string &filepath)
 {
     auto content = file_contents(filepath);
