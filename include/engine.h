@@ -1,7 +1,7 @@
 #pragma once
 
-#include <SDL.h>
 #include "gamemap.h"
+#include <SDL.h>
 
 class SDL2Engine
 {

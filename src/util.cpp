@@ -2,9 +2,9 @@
 
 #include <filesystem>
 #include <fstream>
+#include <iostream>
 #include <string>
 #include <vector>
-#include <iostream>
 
 /**
  * Returns an std::string which represents the raw bytes of the file.
@@ -17,7 +17,6 @@ std::string file_contents(const std::filesystem::path &path)
     // Sanity check
     if (!std::filesystem::is_regular_file(path))
         return {"Irregular"};
-
     // Open the file
     // Note that we have to use binary mode as we want to return a string
     // representing matching the bytes of the file on the file system.
@@ -52,4 +51,3 @@ std::vector<std::string> split(const std::string &str, const std::string &delim)
     }
     return res;
 }
-

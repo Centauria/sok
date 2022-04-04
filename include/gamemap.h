@@ -1,12 +1,9 @@
 #pragma once
 
-#include <SDL.h>
 #include "array.hpp"
+#include <SDL.h>
 #include <string>
 #include <vector>
-
-#define HEIGHT 8
-#define WIDTH 8
 
 using namespace lite;
 
@@ -32,7 +29,9 @@ enum class Action
 class World
 {
 private:
-    array<int[8][8]> data;
+    std::vector<std::vector<int>> data;
+    int height{};
+    int width{};
 
 public:
     explicit World(std::string);

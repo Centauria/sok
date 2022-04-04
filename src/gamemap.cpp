@@ -7,31 +7,36 @@
 #include <iostream>
 #include <vector>
 
+
 using namespace lite;
 
 World::World(std::string filepath)
 {
     auto content = file_contents(filepath);
     auto ss = split(content, "\n");
-    for (int i = 0; i < HEIGHT; i++)
+    for (auto line: ss)
     {
-        auto e = split(ss[i], ",");
-        for (int j = 0; j < WIDTH; j++)
+        std::vector<int> lyne;
+        data.push_back(lyne);
+        auto e = split(line, ",");
+        for (auto c: e)
         {
-            data(i, j) = std::stoi(e[j]);
+            lyne.push_back(std::stoi(c));
         }
     }
+    height = data.size();
+    width = data[0].size();
 }
 
 World::~World() = default;
 
 std::vector<int> World::getPlayerPos()
 {
-    for (int i = 0; i < HEIGHT; i++)
+    for (int i = 0; i < height; i++)
     {
-        for (int j = 0; j < WIDTH; j++)
+        for (int j = 0; j < width; j++)
         {
-            if (data(i, j) == Player || data(i, j) == TargetPlayer)
+            if (data[i][j] == Player || data[i][j] == TargetPlayer)
                 return std::vector<int>{i, j};
         }
     }
@@ -41,7 +46,7 @@ std::vector<int> World::getPlayerPos()
 void World::take(Action action)
 {
     auto x = this->getPlayerPos();
-    auto playerStatus = data(x[0], x[1]);
+    auto playerStatus = data[x[0]][x[1]];
 
     int dx{}, dy{};
     switch (action)
@@ -59,69 +64,69 @@ void World::take(Action action)
         dy = 1;
         break;
     }
-    switch (data(x[0] + dx, x[1] + dy))
+    switch (data[x[0] + dx][x[1] + dy])
     {
     case Target:
-        data(x[0] + dx, x[1] + dy) = TargetPlayer;
+        data[x[0] + dx][x[1] + dy] = TargetPlayer;
         if (playerStatus == TargetPlayer)
-            data(x[0], x[1]) = Target;
+            data[x[0]][x[1]] = Target;
         else
-            data(x[0], x[1]) = None;
+            data[x[0]][x[1]] = None;
         break;
     case TargetBox:
-        switch (data(x[0] + 2 * dx, x[1] + 2 * dy))
+        switch (data[x[0] + 2 * dx][x[1] + 2 * dy])
         {
         case Target:
-            data(x[0] + 2 * dx, x[1] + 2 * dy) = TargetBox;
-            data(x[0] + dx, x[1] + dy) = TargetPlayer;
+            data[x[0] + 2 * dx][x[1] + 2 * dy] = TargetBox;
+            data[x[0] + dx][x[1] + dy] = TargetPlayer;
             if (playerStatus == TargetPlayer)
-                data(x[0], x[1]) = Target;
+                data[x[0]][x[1]] = Target;
             else
-                data(x[0], x[1]) = None;
+                data[x[0]][x[1]] = None;
             break;
         case TargetBox:
         case Box:
         case Wall:
             break;
         case None:
-            data(x[0] + 2 * dx, x[1] + 2 * dy) = Box;
-            data(x[0] + dx, x[1] + dy) = TargetPlayer;
+            data[x[0] + 2 * dx][x[1] + 2 * dy] = Box;
+            data[x[0] + dx][x[1] + dy] = TargetPlayer;
             if (playerStatus == TargetPlayer)
-                data(x[0], x[1]) = Target;
+                data[x[0]][x[1]] = Target;
             else
-                data(x[0], x[1]) = None;
+                data[x[0]][x[1]] = None;
             break;
         }
         break;
     case None:
-        data(x[0] + dx, x[1] + dy) = Player;
+        data[x[0] + dx][x[1] + dy] = Player;
         if (playerStatus == TargetPlayer)
-            data(x[0], x[1]) = Target;
+            data[x[0]][x[1]] = Target;
         else
-            data(x[0], x[1]) = None;
+            data[x[0]][x[1]] = None;
         break;
     case Box:
-        switch (data(x[0] + 2 * dx, x[1] + 2 * dy))
+        switch (data[x[0] + 2 * dx][x[1] + 2 * dy])
         {
         case Target:
-            data(x[0] + 2 * dx, x[1] + 2 * dy) = TargetBox;
-            data(x[0] + dx, x[1] + dy) = Player;
+            data[x[0] + 2 * dx][x[1] + 2 * dy] = TargetBox;
+            data[x[0] + dx][x[1] + dy] = Player;
             if (playerStatus == TargetPlayer)
-                data(x[0], x[1]) = Target;
+                data[x[0]][x[1]] = Target;
             else
-                data(x[0], x[1]) = None;
+                data[x[0]][x[1]] = None;
             break;
         case TargetBox:
         case Box:
         case Wall:
             break;
         case None:
-            data(x[0] + 2 * dx, x[1] + 2 * dy) = Box;
-            data(x[0] + dx, x[1] + dy) = Player;
+            data[x[0] + 2 * dx][x[1] + 2 * dy] = Box;
+            data[x[0] + dx][x[1] + dy] = Player;
             if (playerStatus == TargetPlayer)
-                data(x[0], x[1]) = Target;
+                data[x[0]][x[1]] = Target;
             else
-                data(x[0], x[1]) = None;
+                data[x[0]][x[1]] = None;
             break;
         }
         break;
@@ -132,7 +137,14 @@ void World::take(Action action)
 
 void World::print()
 {
-    std::cout << data << std::endl;
+    for (auto x: data)
+    {
+        for (auto y: x)
+        {
+            std::cout << y << ",";
+        }
+        std::cout << std::endl;
+    }
 }
 
 SDL_Rect *World::cellRect(int x, int y, int sh, int sw)
@@ -146,11 +158,11 @@ SDL_Rect *World::cellRect(int x, int y, int sh, int sw)
 
 void World::render(SDL_Renderer *renderer, int sh, int sw)
 {
-    for (int i = 0; i < HEIGHT; i++)
+    for (int i = 0; i < height; i++)
     {
-        for (int j = 0; j < WIDTH; j++)
+        for (int j = 0; j < width; j++)
         {
-            switch (data(i, j))
+            switch (data[i][j])
             {
             case Target:
                 SDL_SetRenderDrawColor(renderer, 0, 255, 0, SDL_ALPHA_OPAQUE);
