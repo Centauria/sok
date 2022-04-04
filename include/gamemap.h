@@ -1,6 +1,5 @@
 #pragma once
 
-#include "array.hpp"
 #include <SDL.h>
 #include <string>
 #include <vector>
@@ -34,7 +33,7 @@ private:
     int width{};
 
 public:
-    explicit World(std::string);
+    explicit World(const std::string &);
     ~World();
     std::vector<int> getPlayerPos();
     void take(Action);

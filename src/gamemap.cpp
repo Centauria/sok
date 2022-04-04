@@ -1,28 +1,25 @@
 #include "gamemap.h"
-#include "array.hpp"
 #include "util.h"
 
-#include <filesystem>
-#include <fstream>
 #include <iostream>
 #include <vector>
 
 
 using namespace lite;
 
-World::World(std::string filepath)
+World::World(const std::string &filepath)
 {
     auto content = file_contents(filepath);
     auto ss = split(content, "\n");
-    for (auto line: ss)
+    for (const auto &line: ss)
     {
-        std::vector<int> lyne;
-        data.push_back(lyne);
+        std::vector<int> lyne{};
         auto e = split(line, ",");
-        for (auto c: e)
+        for (const auto &c: e)
         {
             lyne.push_back(std::stoi(c));
         }
+        data.push_back(lyne);
     }
     height = data.size();
     width = data[0].size();
