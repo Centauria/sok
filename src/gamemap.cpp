@@ -1,9 +1,6 @@
 #include "gamemap.h"
-#include "array.hpp"
 #include "util.h"
 
-#include <filesystem>
-#include <fstream>
 #include <iostream>
 #include <vector>
 
