@@ -142,11 +142,11 @@ void World::print()
     }
 }
 
-SDL_Rect *World::cellRect(int x, int y, int sh, int sw)
+SDL_Rect *World::cellRect(int x, int y, int sh, int sw, int h, int w)
 {
-    int x0 = sw / 2 - 300;
-    int y0 = sh / 2 - 300;
-    int d = 600 / 8;
+    int d = (int) ((sh / h) < (sw / w) ? sh / h : sw / w);
+    int x0 = (int) (sw / 2 - w * d / 2);
+    int y0 = (int) (sh / 2 - h * d / 2);
 
     return new SDL_Rect{y0 + y * d, x0 + x * d, d, d};
 }
@@ -179,7 +179,7 @@ void World::render(SDL_Renderer *renderer, int sh, int sw)
             default:
                 break;
             }
-            auto rect = cellRect(i, j, sh, sw);
+            auto rect = cellRect(i, j, sh, sw, height, width);
             SDL_RenderFillRect(renderer, rect);
             delete rect;
         }
