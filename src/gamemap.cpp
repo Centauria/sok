@@ -132,7 +132,7 @@ void World::take(Action action)
 
 void World::print()
 {
-    for (auto x: data)
+    for (const auto &x: data)
     {
         for (auto y: x)
         {
@@ -142,7 +142,7 @@ void World::print()
     }
 }
 
-SDL_Rect *World::cellRect(int x, int y, int sh, int sw, int h, int w)
+SDL_Rect *World::cellRect(int x, int y, int sh, int sw, int w, int h)
 {
     int d = (int) ((sh / h) < (sw / w) ? sh / h : sw / w);
     int x0 = (int) (sw / 2 - w * d / 2);
