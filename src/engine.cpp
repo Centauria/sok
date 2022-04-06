@@ -3,46 +3,23 @@
 #define SCREEN_WIDTH 1280
 #define SCREEN_HEIGHT 720
 
-SDL2Engine::SDL2Engine(/* args */)
-{
-}
+SDL2Engine::SDL2Engine() = default;
 
-SDL2Engine::~SDL2Engine()
-{
-}
+SDL2Engine::~SDL2Engine() = default;
 
 void SDL2Engine::init()
 {
     int rendererFlags, windowFlags;
-
     rendererFlags = SDL_RENDERER_ACCELERATED;
+    windowFlags = SDL_WINDOW_RESIZABLE;
 
-    windowFlags = 0;
-
-    if (SDL_Init(SDL_INIT_VIDEO) < 0)
-    {
-        printf("Couldn't initialize SDL: %s\n", SDL_GetError());
-        exit(1);
-    }
-
-    window = SDL_CreateWindow("Shooter 01", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH,
-                              SCREEN_HEIGHT, windowFlags);
-
-    if (!window)
-    {
-        printf("Failed to open %d x %d window: %s\n", SCREEN_WIDTH, SCREEN_HEIGHT, SDL_GetError());
-        exit(1);
-    }
-
+    window = std::make_shared<Window>(
+            Window("Sok",
+                   SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
+                   SCREEN_WIDTH, SCREEN_HEIGHT,
+                   windowFlags));
     SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
-
-    renderer = SDL_CreateRenderer(window, -1, rendererFlags);
-
-    if (!renderer)
-    {
-        printf("Failed to create renderer: %s\n", SDL_GetError());
-        exit(1);
-    }
+    renderer = std::make_shared<Renderer>(Renderer(*window, -1, rendererFlags));
     world.print();
 }
 
@@ -52,10 +29,10 @@ void SDL2Engine::run()
     SDL_Event event;
     while (is_running)
     {
-        SDL_SetRenderDrawColor(renderer, 96, 128, 255, 255);
-        SDL_RenderClear(renderer);
-        world.render(renderer, SCREEN_WIDTH, SCREEN_HEIGHT);
-        SDL_RenderPresent(renderer);
+        renderer->SetDrawColor(96, 128, 255, 255);
+        renderer->Clear();
+        renderWorld(world);
+        renderer->Present();
         while (SDL_PollEvent(&event))
         {
             switch (event.type)
@@ -79,7 +56,7 @@ void SDL2Engine::run()
                     world.take(Action::Right);
                     break;
                 case SDL_SCANCODE_R:
-                    world=World{"maps/2.txt"};
+                    world = World{"maps/2.txt"};
                 default:
                     break;
                 }
@@ -88,5 +65,41 @@ void SDL2Engine::run()
             }
         }
         SDL_Delay(16);
+    }
+}
+void SDL2Engine::renderWorld(World world)
+{
+    auto data = world.getData();
+    for (int i = 0; i < world.getHeight(); i++)
+    {
+        for (int j = 0; j < world.getWidth(); j++)
+        {
+            switch (data[i][j])
+            {
+            case Target:
+                renderer->SetDrawColor(0, 255, 0, SDL_ALPHA_OPAQUE);
+                break;
+            case Player:
+            case TargetPlayer:
+                renderer->SetDrawColor(255, 0, 0, SDL_ALPHA_OPAQUE);
+                break;
+            case Box:
+            case TargetBox:
+                renderer->SetDrawColor(0, 255, 255, SDL_ALPHA_OPAQUE);
+                break;
+            case None:
+                renderer->SetDrawColor(244, 255, 244, SDL_ALPHA_OPAQUE);
+                break;
+            case Wall:
+                renderer->SetDrawColor(0, 0, 0, SDL_ALPHA_OPAQUE);
+                break;
+            default:
+                break;
+            }
+            auto rect = World::cellRect(
+                    i, j, window->GetDrawableHeight(), window->GetDrawableWidth(),
+                    world.getHeight(), world.getWidth());
+            renderer->FillRect(*rect);
+        }
     }
 }
