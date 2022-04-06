@@ -11,3 +11,7 @@ int main(int argc, char *argv[])
     engine.run();
     return 0;
 }
+
+/*  TODO: handle long press event
+        support action undo
+*/

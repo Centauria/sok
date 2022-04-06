@@ -37,6 +37,6 @@ public:
     std::vector<int> getPlayerPos();
     void take(Action);
     void print();
-    static SDL_Rect *cellRect(int, int, int, int,int,int);
+    static SDL_Rect *cellRect(int, int, int, int, int, int);
     void render(SDL_Renderer *, int, int);
 };

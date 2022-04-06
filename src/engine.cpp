@@ -78,6 +78,8 @@ void SDL2Engine::run()
                 case SDL_SCANCODE_D:
                     world.take(Action::Right);
                     break;
+                case SDL_SCANCODE_R:
+                    world=World{"maps/2.txt"};
                 default:
                     break;
                 }
