@@ -4,6 +4,7 @@ project(sok VERSION 0.1.0)
 set(CMAKE_CXX_STANDARD 17)
 
 set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/sdl2-cmake-modules/" ${CMAKE_MODULE_PATH})
+set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/modules/" ${CMAKE_MODULE_PATH})
 
 set(CMAKE_LIBRARY_ARCHITECTURE x64)
 set(FIND_LIBRARY_USE_LIB64_PATHS TRUE)
@@ -15,13 +16,18 @@ add_compile_definitions("_THREAD_SAFE")
 
 find_package(SDL2 REQUIRED)
 
+add_subdirectory(libSDL2pp)
+
+find_package(SDL2PP REQUIRED)
+
 add_executable(sok
     main.cpp
     src/engine.cpp
     src/gamemap.cpp
     src/util.cpp)
-target_link_libraries(sok SDL2::Main)
+target_link_libraries(sok SDL2::Main SDL2pp)
 target_include_directories(sok PUBLIC include)
+target_include_directories(sok PUBLIC ${SDL2PP_INCLUDE_DIRS})
 target_compile_definitions(sok PRIVATE LITE_ARRAY_NO_HINT NDEBUG)
 
 add_custom_command(

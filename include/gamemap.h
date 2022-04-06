@@ -1,8 +1,12 @@
 #pragma once
 
 #include <SDL.h>
+#include <SDL2pp/SDL2pp.hh>
 #include <string>
 #include <vector>
+#include <memory>
+
+using namespace SDL2pp;
 
 
 enum TileType
@@ -37,6 +41,8 @@ public:
     std::vector<int> getPlayerPos();
     void take(Action);
     void print();
-    static SDL_Rect *cellRect(int, int, int, int, int, int);
-    void render(SDL_Renderer *, int, int);
+    static std::unique_ptr<SDL_Rect> cellRect(int y, int x, int sh, int sw, int h, int w);
+    [[nodiscard]] int getHeight() const;
+    [[nodiscard]] int getWidth() const;
+    [[nodiscard]] const std::vector<std::vector<int>> &getData() const;
 };

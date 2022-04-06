@@ -1,8 +1,10 @@
 #include "gamemap.h"
 #include "util.h"
 
+#include <SDL2pp/SDL2pp.hh>
 #include <iostream>
-#include <vector>
+
+using namespace SDL2pp;
 
 
 World::World(const std::string &filepath)
@@ -142,46 +144,24 @@ void World::print()
     }
 }
 
-SDL_Rect *World::cellRect(int x, int y, int sh, int sw, int w, int h)
+std::unique_ptr<SDL_Rect> World::cellRect(int y, int x, int sh, int sw, int h, int w)
 {
     int d = (int) ((sh / h) < (sw / w) ? sh / h : sw / w);
-    int x0 = (int) (sw / 2 - w * d / 2);
-    int y0 = (int) (sh / 2 - h * d / 2);
+    int x0 = (int) ((sw - w * d) / 2);
+    int y0 = (int) ((sh - h * d) / 2);
 
-    return new SDL_Rect{y0 + y * d, x0 + x * d, d, d};
+    return std::make_unique<SDL_Rect>(SDL_Rect{x0 + x * d, y0 + y * d, d, d});
 }
 
-void World::render(SDL_Renderer *renderer, int sh, int sw)
+int World::getHeight() const
 {
-    for (int i = 0; i < height; i++)
-    {
-        for (int j = 0; j < width; j++)
-        {
-            switch (data[i][j])
-            {
-            case Target:
-                SDL_SetRenderDrawColor(renderer, 0, 255, 0, SDL_ALPHA_OPAQUE);
-                break;
-            case Player:
-            case TargetPlayer:
-                SDL_SetRenderDrawColor(renderer, 255, 0, 0, SDL_ALPHA_OPAQUE);
-                break;
-            case Box:
-            case TargetBox:
-                SDL_SetRenderDrawColor(renderer, 0, 255, 255, SDL_ALPHA_OPAQUE);
-                break;
-            case None:
-                SDL_SetRenderDrawColor(renderer, 244, 255, 244, SDL_ALPHA_OPAQUE);
-                break;
-            case Wall:
-                SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
-                break;
-            default:
-                break;
-            }
-            auto rect = cellRect(i, j, sh, sw, height, width);
-            SDL_RenderFillRect(renderer, rect);
-            delete rect;
-        }
-    }
+    return height;
+}
+int World::getWidth() const
+{
+    return width;
+}
+const std::vector<std::vector<int>> &World::getData() const
+{
+    return data;
 }
