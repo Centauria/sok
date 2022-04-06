@@ -3,8 +3,6 @@
 
 #include <SDL2pp/SDL2pp.hh>
 #include <iostream>
-#include <memory>
-#include <vector>
 
 using namespace SDL2pp;
 
