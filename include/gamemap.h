@@ -4,6 +4,7 @@
 #include <SDL2pp/SDL2pp.hh>
 #include <string>
 #include <vector>
+#include <memory>
 
 using namespace SDL2pp;
 
