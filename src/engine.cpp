@@ -1,22 +1,40 @@
 #include "engine.h"
 
-#define SCREEN_WIDTH 1280
-#define SCREEN_HEIGHT 720
-
 SDL2Engine::SDL2Engine() = default;
 
 SDL2Engine::~SDL2Engine() = default;
 
-void SDL2Engine::init()
+void SDL2Engine::init(int displayID, bool is_fullscreen, int window_height, int window_width)
 {
     int rendererFlags, windowFlags;
     rendererFlags = SDL_RENDERER_ACCELERATED;
-    windowFlags = SDL_WINDOW_RESIZABLE;
+    windowFlags = is_fullscreen ? SDL_WINDOW_FULLSCREEN : SDL_WINDOW_RESIZABLE;
 
+    int displays = SDL_GetNumVideoDisplays();
+    if (displays <= 0)
+    {
+        std::cerr << SDL_GetError() << std::endl;
+        exit(1);
+    }
+    std::vector<SDL_Rect> displayBounds;
+    for (int i = 0; i < displays; i++)
+    {
+        displayBounds.emplace_back();
+        SDL_GetDisplayBounds(i, &displayBounds.back());
+    }
+    if (displayID >= displays)
+    {
+        displayID = 0;
+    }
+    if (is_fullscreen)
+    {
+        window_width = displayBounds[displayID].w;
+        window_height = displayBounds[displayID].h;
+    }
     window = std::make_shared<Window>(
             Window("Sok",
-                   SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-                   SCREEN_WIDTH, SCREEN_HEIGHT,
+                   displayBounds[displayID].x + 100, displayBounds[displayID].y + 100,
+                   window_width, window_height,
                    windowFlags));
     SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
     renderer = std::make_shared<Renderer>(Renderer(*window, -1, rendererFlags));
@@ -67,6 +85,7 @@ void SDL2Engine::run()
         SDL_Delay(16);
     }
 }
+
 void SDL2Engine::renderWorld(World world)
 {
     auto data = world.getData();

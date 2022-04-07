@@ -17,7 +17,7 @@ private:
 public:
     SDL2Engine();
     ~SDL2Engine();
-    void init();
+    void init(int, bool, int, int);
     void run();
     void renderWorld(World world);
 };

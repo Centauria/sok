@@ -17,15 +17,16 @@ add_compile_definitions("_THREAD_SAFE")
 find_package(SDL2 REQUIRED)
 
 add_subdirectory(libSDL2pp)
-
 find_package(SDL2PP REQUIRED)
+
+find_package(inih REQUIRED)
 
 add_executable(sok
     main.cpp
     src/engine.cpp
     src/gamemap.cpp
     src/util.cpp)
-target_link_libraries(sok SDL2::Main SDL2pp)
+target_link_libraries(sok SDL2::Main SDL2pp inih)
 target_include_directories(sok PUBLIC include)
 target_include_directories(sok PUBLIC ${SDL2PP_INCLUDE_DIRS})
 target_compile_definitions(sok PRIVATE LITE_ARRAY_NO_HINT NDEBUG)
@@ -35,3 +36,8 @@ add_custom_command(
     POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/maps
     $<TARGET_FILE_DIR:${PROJECT_NAME}>/maps)
+add_custom_command(
+    TARGET ${PROJECT_NAME}
+    POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/config
+    $<TARGET_FILE_DIR:${PROJECT_NAME}>/config)
