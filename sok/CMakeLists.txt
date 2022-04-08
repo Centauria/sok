@@ -3,7 +3,6 @@ project(sok-main VERSION 0.1.0)
 
 add_compile_definitions("_THREAD_SAFE")
 
-find_package(SDL2 REQUIRED)
 find_package(inih REQUIRED)
 
 add_executable(${PROJECT_NAME}
