@@ -29,4 +29,4 @@ struct ResourceHeader
 
 std::vector<ResourceItem> scan(const std::string &);
 
-void write_file(std::string, uint16_t, std::string, std::vector<ResourceItem>);
+void write_file(const std::string&, uint16_t, const std::string&, const std::vector<ResourceItem>&);

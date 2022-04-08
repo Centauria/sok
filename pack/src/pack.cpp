@@ -32,7 +32,10 @@ std::vector<ResourceItem> scan(const std::string &path)
     return res;
 }
 
-void write_file(std::string path, uint16_t signature, std::string filename, std::vector<ResourceItem> items)
+void write_file(const std::string &path,
+                uint16_t signature,
+                const std::string &filename,
+                const std::vector<ResourceItem>& items)
 {
     std::ofstream pack(filename, std::ios::out | std::ios::binary);
     if (pack.is_open())
