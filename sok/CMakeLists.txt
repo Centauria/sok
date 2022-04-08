@@ -9,8 +9,8 @@ add_executable(${PROJECT_NAME}
     src/main.cpp
     src/engine.cpp
     src/gamemap.cpp
-    src/util.cpp)
-target_link_libraries(${PROJECT_NAME} SDL2::Main SDL2pp inih)
+    ../util/util.cpp)
+target_link_libraries(${PROJECT_NAME} SDL2::Main SDL2pp inih util)
 target_include_directories(${PROJECT_NAME} PUBLIC include)
 target_include_directories(${PROJECT_NAME} PUBLIC ${SDL2PP_INCLUDE_DIRS})
 target_compile_definitions(${PROJECT_NAME} PRIVATE LITE_ARRAY_NO_HINT NDEBUG)

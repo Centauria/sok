@@ -19,5 +19,6 @@ add_subdirectory(${CMAKE_SOURCE_DIR}/3rd-party/libSDL2pp)
 add_subdirectory(${PROJECT_SOURCE_DIR}/3rd-party/argparse)
 add_subdirectory(${PROJECT_SOURCE_DIR}/3rd-party/blobify)
 
+add_subdirectory(util)
 add_subdirectory(sok)
 add_subdirectory(pack)
