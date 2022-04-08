@@ -4,9 +4,11 @@
 
 #include "pack.h"
 
+#include <string>
 #include <filesystem>
-#include "blobify/blobify.hpp"
 #include "argparse/argparse.hpp"
+
+using namespace std::string_literals;
 
 namespace fs = std::filesystem;
 
@@ -15,6 +17,9 @@ int main(int argc, const char *argv[])
     argparse::ArgumentParser parser("pack");
     parser.add_argument("resources")
             .help("specify path to resources folder");
+    parser.add_argument("-o", "--output")
+            .help("output file path")
+            .default_value("output.pac"s);
     try
     {
         parser.parse_args(argc, argv);
@@ -27,14 +32,11 @@ int main(int argc, const char *argv[])
     }
 
     auto resources = parser.get<std::string>("resources");
-    std::cout << fs::current_path() << std::endl;
+    auto output = parser.get<std::string>("--output");
     if (fs::is_directory(resources))
     {
-        for (auto &e: fs::recursive_directory_iterator(resources))
-        {
-            auto fp = e.path();
-            std::cout << fp << std::endl;
-        }
+        auto items = scan(resources);
+        write_file(resources, 0x163f, output, items);
     }
     return 0;
 }

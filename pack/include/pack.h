@@ -3,21 +3,16 @@
 //
 #pragma once
 
+#include <string>
+#include <vector>
 #include <filesystem>
 #include "blobify/blobify.hpp"
-
-enum class ResourceType
-{
-    image = 0,
-    sound,
-};
 
 struct ResourceItem
 {
     std::string xpath;
-    ResourceType xtype;
+    uint64_t filesize;
     uint64_t start_offset;
-    uint64_t end_offset;
 };
 
 struct ResourceHeader
@@ -25,3 +20,13 @@ struct ResourceHeader
     uint16_t signature;
     uint32_t index_length;
 };
+
+/* The format of resource pack file
+ *
+ * {ResourceHeader, [ResourceItem * index_length], [data blob]}
+ *
+ */
+
+std::vector<ResourceItem> scan(const std::string &);
+
+void write_file(std::string, uint16_t, std::string, std::vector<ResourceItem>);
