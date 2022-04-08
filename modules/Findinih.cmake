@@ -1,4 +1,4 @@
-set(src_dir ${CMAKE_SOURCE_DIR}/inih)
+set(src_dir ${CMAKE_SOURCE_DIR}/3rd-party/inih)
 
 set(src_test INIReaderTest.cpp)
 set(headers INIReader.h)

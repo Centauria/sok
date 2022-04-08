@@ -1,9 +1,15 @@
 [submodule "sdl2-cmake-modules"]
-	path = sdl2-cmake-modules
+	path = 3rd-party/sdl2-cmake-modules
 	url = https://github.com/aminosbh/sdl2-cmake-modules
 [submodule "libSDL2pp"]
-	path = libSDL2pp
+	path = 3rd-party/libSDL2pp
 	url = https://github.com/libSDL2pp/libSDL2pp
 [submodule "inih"]
-	path = inih
+	path = 3rd-party/inih
 	url = https://github.com/jtilly/inih
+[submodule "blobify"]
+	path = 3rd-party/blobify
+	url = https://github.com/neobrain/blobify
+[submodule "3rd-party/argparse"]
+	path = 3rd-party/argparse
+	url = https://github.com/p-ranav/argparse
