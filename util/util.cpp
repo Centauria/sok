@@ -2,9 +2,11 @@
 
 #include <filesystem>
 #include <fstream>
-#include <iostream>
 #include <string>
 #include <vector>
+#include <algorithm>
+#include <cctype>
+#include <locale>
 
 /**
  * Returns an std::string which represents the raw bytes of the file.
@@ -50,4 +52,50 @@ std::vector<std::string> split(const std::string &str, const std::string &delim)
         pos = strs.find(delim);
     }
     return res;
+}
+
+// trim from start (in place)
+void ltrim(std::string &s, const std::string &chars)
+{
+    s.erase(s.begin(), std::find_if(s.begin(), s.end(), [&chars](unsigned char ch)
+    {
+        return chars.empty() ? !std::isspace(ch) : chars.find(ch) == std::string::npos;
+    }));
+}
+
+// trim from end (in place)
+void rtrim(std::string &s, const std::string &chars)
+{
+    s.erase(std::find_if(s.rbegin(), s.rend(), [&chars](unsigned char ch)
+    {
+        return chars.empty() ? !std::isspace(ch) : chars.find(ch) == std::string::npos;
+    }).base(), s.end());
+}
+
+// trim from both ends (in place)
+void trim(std::string &s, const std::string &chars)
+{
+    ltrim(s, chars);
+    rtrim(s, chars);
+}
+
+// trim from start (copying)
+std::string ltrim_copy(std::string s, const std::string &chars)
+{
+    ltrim(s, chars);
+    return s;
+}
+
+// trim from end (copying)
+std::string rtrim_copy(std::string s, const std::string &chars)
+{
+    rtrim(s, chars);
+    return s;
+}
+
+// trim from both ends (copying)
+std::string trim_copy(std::string s, const std::string &chars)
+{
+    trim(s, chars);
+    return s;
 }

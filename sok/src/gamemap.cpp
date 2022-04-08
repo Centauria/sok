@@ -1,7 +1,7 @@
 #include "gamemap.h"
 #include "util.h"
 
-#include <SDL2pp/SDL2pp.hh>
+#include "SDL2pp/SDL2pp.hh"
 #include <iostream>
 
 using namespace SDL2pp;
