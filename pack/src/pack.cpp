@@ -3,6 +3,7 @@
 //
 
 #include "pack.h"
+#include "util.h"
 
 #include <iostream>
 #include <fstream>
@@ -22,7 +23,7 @@ std::vector<ResourceItem> scan(const std::string &path)
         {
             auto size = fs::file_size(fp);
             auto xpath = std::regex_replace(fp.string(), std::regex{"^" + path}, "");
-            xpath = std::regex_replace(xpath, std::regex{"^/"}, "");
+            ltrim(xpath, "/");
             std::cout << fp << " -> " << xpath << std::endl;
             ResourceItem item{xpath, size, offset};
             res.push_back(item);
@@ -35,7 +36,7 @@ std::vector<ResourceItem> scan(const std::string &path)
 void write_file(const std::string &path,
                 uint16_t signature,
                 const std::string &filename,
-                const std::vector<ResourceItem>& items)
+                const std::vector<ResourceItem> &items)
 {
     std::ofstream pack(filename, std::ios::out | std::ios::binary);
     if (pack.is_open())
