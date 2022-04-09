@@ -10,8 +10,8 @@ set(FIND_LIBRARY_USE_LIB64_PATHS TRUE)
 add_compile_options("$<$<C_COMPILER_ID:MSVC>:/utf-8>")
 add_compile_options("$<$<CXX_COMPILER_ID:MSVC>:/utf-8>")
 
-list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/3rd-party/sdl2-cmake-modules/")
-list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/modules/")
+list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/3rd-party/sdl2-cmake-modules")
+list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/modules")
 
 find_package(SDL2 REQUIRED)
 

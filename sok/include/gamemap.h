@@ -32,8 +32,8 @@ class World
 {
 private:
     std::vector<std::vector<int>> data;
-    int height{};
-    int width{};
+    size_t height{};
+    size_t width{};
 
 public:
     explicit World(const std::string &);
