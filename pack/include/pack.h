@@ -17,7 +17,7 @@ struct ResourceItem
 
 struct ResourceHeader
 {
-    uint16_t signature;
+    uint32_t signature;
     uint32_t index_length;
 };
 

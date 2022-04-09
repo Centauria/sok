@@ -43,11 +43,13 @@ void write_file(const std::string &path,
     {
         ResourceHeader header{signature, static_cast<uint32_t>(items.size())};
         pack.write((char *) (&header), sizeof(ResourceHeader));
+        auto pack_buf = std::ostreambuf_iterator<char>(pack);
         for (auto item: items)
         {
-            pack.write((char *) (&item), sizeof(ResourceItem));
+            pack.write(item.xpath.c_str(), item.xpath.size() + 1);
+            pack.write((char *) (&item.filesize), sizeof(item.filesize));
+            pack.write((char *) (&item.start_offset), sizeof(item.start_offset));
         }
-        auto pack_buf = std::ostreambuf_iterator<char>(pack);
         for (const auto &item: items)
         {
             auto item_path = fs::path(path) / item.xpath;
