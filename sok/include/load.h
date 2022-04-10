@@ -4,6 +4,8 @@
 #pragma once
 
 #include "pack.h"
+#include "util.h"
+#include "data.h"
 
 #include <string>
 #include <utility>
@@ -23,9 +25,9 @@ public:
     { load_items(); };
     ~Loader() = default;
     void load_items();
+    [[nodiscard]] std::vector<std::string> keys() const;
     std::shared_ptr<std::vector<char>> read(const std::string &xpath);
-    template<class Tp>
-    Tp &get(const std::string &xpath);
+    std::shared_ptr<DataSVG> getSVG(const std::string &xpath);
 };
 
 class Processor

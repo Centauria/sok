@@ -19,5 +19,5 @@ private:
     std::shared_ptr<lunasvg::Document> document;
 public:
     explicit DataSVG(std::vector<char> data);
-    SDL2pp::Surface getSurface(uint32_t width, uint32_t height);
+    SDL2pp::Surface *getSurface(uint32_t width, uint32_t height) const;
 };

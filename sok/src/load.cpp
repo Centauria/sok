@@ -3,7 +3,6 @@
 //
 
 #include "load.h"
-#include "util.h"
 
 #include <fstream>
 #include <memory>
@@ -43,14 +42,13 @@ void Loader::load_items()
     }
 }
 
-template<class Tp>
-Tp &Loader::get(const std::string &xpath)
+std::shared_ptr<DataSVG> Loader::getSVG(const std::string &xpath)
 {
-    auto ext = split(xpath, ".")[-1];
+    auto ext = split_ext(xpath);
     auto vchar_ptr = read(xpath);
     if (ext == "svg")
     {
-        return vchar_ptr;
+        return std::make_shared<DataSVG>(DataSVG(*vchar_ptr));
     } else
     {
         throw std::runtime_error("extension name not recognized: " + ext);
@@ -63,10 +61,20 @@ std::shared_ptr<std::vector<char>> Loader::read(const std::string &xpath)
     auto item = items[xpath];
     auto offset = initial_offset + item.start_offset;
     loader.seekg(offset, loader.beg);
-    std::vector<char> vc;
+    std::vector<char> vc(item.filesize);
     if (!loader.read(vc.data(), item.filesize))
     {
         throw std::runtime_error("error reading data from offset" + std::to_string(offset));
     }
     return std::make_shared<std::vector<char>>(vc);
+}
+
+std::vector<std::string> Loader::keys() const
+{
+    auto ks = std::vector<std::string>();
+    for (const auto &item: items)
+    {
+        ks.push_back(item.first);
+    }
+    return ks;
 }
