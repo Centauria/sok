@@ -6,6 +6,7 @@
 #include "pack.h"
 
 #include <string>
+#include <utility>
 #include <vector>
 #include <memory>
 #include <unordered_map>
@@ -15,13 +16,14 @@ class Loader
 {
 private:
     std::string path;
-    std::unique_ptr<std::vector<ResourceItem>> items;
-    std::unordered_map<std::string, ResourceItem> item_map;
+    std::unordered_map<std::string, ResourceItem> items{};
+    size_t initial_offset{};
 public:
-    explicit Loader(std::string path) : path(std::move(path)), items()
-    {};
+    explicit Loader(std::string path) : path(std::move(path))
+    { load_items(); };
     ~Loader() = default;
     void load_items();
+    std::shared_ptr<std::vector<char>> read(const std::string &xpath);
     template<class Tp>
     Tp &get(const std::string &xpath);
 };
