@@ -13,3 +13,6 @@
 [submodule "3rd-party/argparse"]
 	path = 3rd-party/argparse
 	url = https://github.com/p-ranav/argparse
+[submodule "3rd-party/lunasvg"]
+	path = 3rd-party/lunasvg
+	url = https://github.com/sammycage/lunasvg
