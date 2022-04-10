@@ -9,7 +9,8 @@ add_executable(${PROJECT_NAME}
     src/main.cpp
     src/engine.cpp
     src/gamemap.cpp
-    src/load.cpp)
+    src/load.cpp
+    src/data.cpp)
 target_link_libraries(${PROJECT_NAME} SDL2::Main SDL2pp inih util lunasvg pack::lib)
 target_include_directories(${PROJECT_NAME} PUBLIC include)
 target_include_directories(${PROJECT_NAME} PUBLIC ${SDL2PP_INCLUDE_DIRS})

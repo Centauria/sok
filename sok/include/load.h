@@ -27,3 +27,20 @@ public:
     template<class Tp>
     Tp &get(const std::string &xpath);
 };
+
+class Processor
+{
+private:
+public:
+    virtual ~Processor() = default;
+    virtual void process() const = 0;
+};
+
+using ProcessorPtr = std::shared_ptr<Processor>;
+
+class ProcessorSVG : public Processor
+{
+public:
+    virtual void process() const override
+    {};
+};

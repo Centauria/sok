@@ -47,7 +47,14 @@ template<class Tp>
 Tp &Loader::get(const std::string &xpath)
 {
     auto ext = split(xpath, ".")[-1];
-    return nullptr;
+    auto vchar_ptr = read(xpath);
+    if (ext == "svg")
+    {
+        return vchar_ptr;
+    } else
+    {
+        throw std::runtime_error("extension name not recognized: " + ext);
+    }
 }
 
 std::shared_ptr<std::vector<char>> Loader::read(const std::string &xpath)
