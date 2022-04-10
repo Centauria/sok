@@ -7,6 +7,7 @@
 #include <algorithm>
 #include <cctype>
 #include <locale>
+#include <stdexcept>
 
 /**
  * Returns an std::string which represents the raw bytes of the file.
@@ -18,13 +19,17 @@ std::string file_contents(const std::filesystem::path &path)
 {
     // Sanity check
     if (!std::filesystem::is_regular_file(path))
-        return {"Irregular"};
+    {
+        throw std::runtime_error("irregular file");
+    }
     // Open the file
     // Note that we have to use binary mode as we want to return a string
     // representing matching the bytes of the file on the file system.
     std::ifstream file(path, std::ios::in | std::ios::binary);
     if (!file.is_open())
-        return {"Not open"};
+    {
+        throw std::runtime_error("error opening file " + path.string());
+    }
 
     // Read contents
     const std::size_t &size = std::filesystem::file_size(path);
