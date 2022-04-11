@@ -37,6 +37,11 @@
 # VSCode
 .vscode
 
+# Visual Studio
+.vs
+out
+CMakeSettings.json
+
 # CMake build
 cmake-build-*
 build
