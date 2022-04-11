@@ -16,12 +16,6 @@ int main(int argc, char *argv[])
     }
 
     SDL2Engine engine{};
-    auto ks = engine.getLoader().keys();
-    for (const auto &k: ks)
-    {
-        auto data = engine.getLoader().getSVG(k);
-        std::cout << k << std::endl;
-    }
     engine.init(
             reader.GetInteger("screen", "monitor", 0),
             reader.GetBoolean("screen", "fullscreen", false),

@@ -90,13 +90,16 @@ void SDL2Engine::renderWorld(World world)
         for (int j = 0; j < world.getWidth(); j++)
         {
             auto xpath = resource_map[(TileType) data[i][j]];
-            const auto rect = World::cellRect(
-                    i, j, window->GetDrawableHeight(), window->GetDrawableWidth(),
-                    world.getHeight(), world.getWidth());
-            auto pSurface = loader.getSVG(xpath)->getSurface(rect->w, rect->h);
-            auto texture = SDL2pp::Texture(*renderer, *pSurface);
-            renderer->Copy(texture, NullOpt, SDL2pp::Point{rect->x, rect->y});
-            delete pSurface;
+            if (!xpath.empty())
+            {
+                const auto rect = World::cellRect(
+                        i, j, window->GetDrawableHeight(), window->GetDrawableWidth(),
+                        world.getHeight(), world.getWidth());
+                auto pSurface = loader.getSVG(xpath)->getSurface(rect->w, rect->h);
+                auto texture = SDL2pp::Texture(*renderer, *pSurface);
+                renderer->Copy(texture, NullOpt, SDL2pp::Point{rect->x, rect->y});
+                delete pSurface;
+            }
         }
     }
 }

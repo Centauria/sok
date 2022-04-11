@@ -18,7 +18,7 @@ SDL2pp::Surface *DataSVG::getSurface(uint32_t width, uint32_t height) const
     }
     const auto surface = new SDL2pp::Surface(
             static_cast<void *>(bitmap.data()),
-            width, height, 32, 4 * width,
-            0xff000000, 0x00ff0000, 0x0000ff00, 0x000000ff);
-    return std::move(surface);
+            width, height, 32, bitmap.stride(),
+            0x000000ff, 0x0000ff00, 0x00ff0000, 0xff000000);
+    return surface;
 }
