@@ -17,9 +17,8 @@ find_package(SDL2 REQUIRED)
 find_package(SDL2_mixer REQUIRED)
 set(SDL2PP_WITH_MIXER ON)
 
-add_subdirectory(${CMAKE_SOURCE_DIR}/3rd-party/libSDL2pp)
+add_subdirectory(${PROJECT_SOURCE_DIR}/3rd-party/libSDL2pp)
 add_subdirectory(${PROJECT_SOURCE_DIR}/3rd-party/argparse)
-add_subdirectory(${PROJECT_SOURCE_DIR}/3rd-party/blobify)
 add_subdirectory(${PROJECT_SOURCE_DIR}/3rd-party/lunasvg)
 
 add_subdirectory(util)

@@ -7,9 +7,6 @@
 [submodule "inih"]
 	path = 3rd-party/inih
 	url = https://github.com/jtilly/inih
-[submodule "blobify"]
-	path = 3rd-party/blobify
-	url = https://github.com/neobrain/blobify
 [submodule "3rd-party/argparse"]
 	path = 3rd-party/argparse
 	url = https://github.com/p-ranav/argparse
