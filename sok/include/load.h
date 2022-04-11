@@ -26,7 +26,7 @@ public:
     ~Loader() = default;
     void load_items();
     [[nodiscard]] std::vector<std::string> keys() const;
-    std::shared_ptr<std::vector<char>> read(const std::string &xpath);
+    std::shared_ptr<std::vector<uint8_t>> read(const std::string &xpath);
     std::shared_ptr<DataSVG> getSVG(const std::string &xpath);
     std::shared_ptr<DataOGG> getOGG(const std::string &xpath);
 };

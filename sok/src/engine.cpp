@@ -1,10 +1,5 @@
 #include "engine.h"
 
-SDL2Engine::~SDL2Engine()
-{
-
-}
-
 
 void SDL2Engine::init(int displayID, bool is_fullscreen, int window_height, int window_width)
 {
@@ -41,27 +36,22 @@ void SDL2Engine::init(int displayID, bool is_fullscreen, int window_height, int 
     SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
     renderer = std::make_shared<Renderer>(Renderer(*window, -1, rendererFlags));
     world.print();
+    current_window_h = window->GetHeight();
+    current_window_w = window->GetWidth();
 }
 
 void SDL2Engine::run()
 {
     bool is_running = true;
-    std::cout << loader.getOGG("snd/work-loop.ogg")->to_string() << std::endl;
-    //    auto music = loader.getOGG("snd/work-loop.ogg")->getMusic();
-    //    mixer.PlayMusic(*music);
-    //    mixer.PlayChannel(-1, *(loader.getOGG("snd/work-loop.ogg")->getChunk()));
-    int chan;
-    if ((chan = mixer.PlayChannel(0, SDL2pp::Chunk("resources/snd/work-loop.ogg"))) < 0)
-    {
-        std::cerr << "error playing audio" << std::endl;
-    } else
-    {
-        mixer.SetVolume(chan, MIX_MAX_VOLUME / 2);
-        std::cout << "good on chan " << chan << std::endl;
-    }
+    auto music = Music("resources/snd/work-loop.mp3");
+    mixer.PlayMusic(music);
     SDL_Event event;
     while (is_running)
     {
+        if (current_window_h != window->GetHeight() || current_window_w != window->GetWidth())
+        {
+            entity_map.clear();
+        }
         renderer->SetDrawColor(96, 128, 255, 255);
         renderer->Clear();
         renderWorld(world);

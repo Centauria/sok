@@ -31,9 +31,11 @@ private:
             {Wall,         "img/wall.svg"},
     };
     std::unordered_map<TileType, std::shared_ptr<lunasvg::Bitmap>> entity_map{};
+    int current_window_w{}, current_window_h{};
+
 public:
     SDL2Engine() = default;
-    ~SDL2Engine();
+    ~SDL2Engine() = default;
     void init(int, bool, int, int);
     void run();
     void renderWorld(World world);

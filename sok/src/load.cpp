@@ -69,18 +69,18 @@ std::shared_ptr<DataOGG> Loader::getOGG(const std::string &xpath)
     }
 }
 
-std::shared_ptr<std::vector<char>> Loader::read(const std::string &xpath)
+std::shared_ptr<std::vector<uint8_t>> Loader::read(const std::string &xpath)
 {
     std::ifstream loader(path, std::ios::in | std::ios::binary);
     auto item = items[xpath];
     auto offset = initial_offset + item.start_offset;
     loader.seekg(offset, loader.beg);
-    std::vector<char> vc(item.filesize);
-    if (!loader.read(vc.data(), item.filesize))
+    std::vector<uint8_t> vc(item.filesize);
+    if (!loader.read((char *) (vc.data()), item.filesize))
     {
         throw std::runtime_error("error reading data from offset" + std::to_string(offset));
     }
-    return std::make_shared<std::vector<char>>(vc);
+    return std::make_shared<std::vector<uint8_t>>(vc);
 }
 
 std::vector<std::string> Loader::keys() const

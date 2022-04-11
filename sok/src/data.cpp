@@ -4,7 +4,7 @@
 
 #include "data.h"
 
-DataSVG::DataSVG(std::vector<char> data)
+DataSVG::DataSVG(std::vector<uint8_t> data)
 {
     document = lunasvg::Document::loadFromData(std::string(data.begin(), data.end()));
 }
@@ -34,16 +34,22 @@ SDL2pp::Surface *DataSVG::getSurface(uint32_t width, uint32_t height) const
     return surface;
 }
 
-std::shared_ptr<SDL2pp::Music> DataOGG::getMusic()
+std::vector<uint8_t> DataOGG::getData()
 {
-    auto container_ops = SDL2pp::ContainerRWops<std::vector<char>>(data);
-    auto ops = SDL2pp::RWops{std::move(container_ops)};
-    return std::make_shared<SDL2pp::Music>(SDL2pp::Music(ops, MUS_OGG));
+    return std::vector<uint8_t>(data);
+}
+
+SDL2pp::Music DataOGG::getMusic()
+{
+    auto data_copy = std::vector<uint8_t>(data);
+    auto container_ops = SDL2pp::ContainerRWops<std::vector<uint8_t>>(data_copy);
+    auto ops = SDL2pp::RWops{&container_ops};
+    return SDL2pp::Music(ops, MUS_OGG);
 }
 
 std::shared_ptr<SDL2pp::Chunk> DataOGG::getChunk()
 {
-    auto container_ops = SDL2pp::ContainerRWops<std::vector<char>>(data);
+    auto container_ops = SDL2pp::ContainerRWops<std::vector<uint8_t>>(data);
     auto ops = SDL2pp::RWops{std::move(container_ops)};
     return std::make_shared<SDL2pp::Chunk>(SDL2pp::Chunk(ops));
 }
