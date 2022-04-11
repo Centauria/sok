@@ -1,9 +1,5 @@
 #include "engine.h"
 
-SDL2Engine::SDL2Engine() = default;
-
-SDL2Engine::~SDL2Engine() = default;
-
 void SDL2Engine::init(int displayID, bool is_fullscreen, int window_height, int window_width)
 {
     int rendererFlags, windowFlags;
@@ -93,32 +89,22 @@ void SDL2Engine::renderWorld(World world)
     {
         for (int j = 0; j < world.getWidth(); j++)
         {
-            switch (data[i][j])
+            auto xpath = resource_map[(TileType) data[i][j]];
+            if (!xpath.empty())
             {
-            case Target:
-                renderer->SetDrawColor(0, 255, 0, SDL_ALPHA_OPAQUE);
-                break;
-            case Player:
-            case TargetPlayer:
-                renderer->SetDrawColor(255, 0, 0, SDL_ALPHA_OPAQUE);
-                break;
-            case Box:
-            case TargetBox:
-                renderer->SetDrawColor(0, 255, 255, SDL_ALPHA_OPAQUE);
-                break;
-            case None:
-                renderer->SetDrawColor(244, 255, 244, SDL_ALPHA_OPAQUE);
-                break;
-            case Wall:
-                renderer->SetDrawColor(0, 0, 0, SDL_ALPHA_OPAQUE);
-                break;
-            default:
-                break;
+                const auto rect = World::cellRect(
+                        i, j, window->GetDrawableHeight(), window->GetDrawableWidth(),
+                        world.getHeight(), world.getWidth());
+                auto pSurface = loader.getSVG(xpath)->getSurface(rect->w, rect->h);
+                auto texture = SDL2pp::Texture(*renderer, *pSurface);
+                renderer->Copy(texture, NullOpt, SDL2pp::Point{rect->x, rect->y});
+                delete pSurface;
             }
-            auto rect = World::cellRect(
-                    i, j, window->GetDrawableHeight(), window->GetDrawableWidth(),
-                    world.getHeight(), world.getWidth());
-            renderer->FillRect(*rect);
         }
     }
+}
+
+Loader SDL2Engine::getLoader() const
+{
+    return loader;
 }

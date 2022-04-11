@@ -1,6 +1,8 @@
-#include <iostream>
 #include "engine.h"
-#include "INIReader.h"
+#include "data.h"
+
+#include <iostream>
+#include <INIReader.h>
 
 #undef main //This line is for GCC on Windows
 

@@ -59,6 +59,13 @@ std::vector<std::string> split(const std::string &str, const std::string &delim)
     return res;
 }
 
+std::string split_ext(const std::string &str)
+{
+    auto ss = split(str, ".");
+    // I don't know why cannot use `ss.back()` or `ss[-1]`
+    return ss[ss.size() - 1];
+}
+
 // trim from start (in place)
 void ltrim(std::string &s, const std::string &chars)
 {

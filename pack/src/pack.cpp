@@ -20,6 +20,10 @@ std::vector<ResourceItem> scan(const std::string &path)
     for (auto &e: fs::recursive_directory_iterator(path))
     {
         auto fp = e.path();
+        if (std::regex_search(fp.string(), std::regex{"\\.DS_Store$"}))
+        {
+            continue;
+        }
         if (fs::is_regular_file(fp))
         {
             auto size = fs::file_size(fp);

@@ -144,13 +144,13 @@ void World::print()
     }
 }
 
-std::unique_ptr<SDL_Rect> World::cellRect(int y, int x, int sh, int sw, int h, int w)
+std::shared_ptr<SDL_Rect> World::cellRect(int y, int x, int sh, int sw, int h, int w)
 {
     int d = (int) ((sh / h) < (sw / w) ? sh / h : sw / w);
     int x0 = (int) ((sw - w * d) / 2);
     int y0 = (int) ((sh - h * d) / 2);
 
-    return std::make_unique<SDL_Rect>(SDL_Rect{x0 + x * d, y0 + y * d, d, d});
+    return std::make_shared<SDL_Rect>(SDL_Rect{x0 + x * d, y0 + y * d, d, d});
 }
 
 int World::getHeight() const
