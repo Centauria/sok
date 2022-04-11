@@ -1,5 +1,11 @@
 #include "engine.h"
 
+SDL2Engine::~SDL2Engine()
+{
+
+}
+
+
 void SDL2Engine::init(int displayID, bool is_fullscreen, int window_height, int window_width)
 {
     int rendererFlags, windowFlags;
@@ -41,9 +47,9 @@ void SDL2Engine::run()
 {
     bool is_running = true;
     std::cout << loader.getOGG("snd/work-loop.ogg")->to_string() << std::endl;
-//    auto music = loader.getOGG("snd/work-loop.ogg")->getMusic();
-//    mixer.PlayMusic(*music);
-//    mixer.PlayChannel(-1, *(loader.getOGG("snd/work-loop.ogg")->getChunk()));
+    //    auto music = loader.getOGG("snd/work-loop.ogg")->getMusic();
+    //    mixer.PlayMusic(*music);
+    //    mixer.PlayChannel(-1, *(loader.getOGG("snd/work-loop.ogg")->getChunk()));
     int chan;
     if ((chan = mixer.PlayChannel(0, SDL2pp::Chunk("resources/snd/work-loop.ogg"))) < 0)
     {
@@ -102,13 +108,21 @@ void SDL2Engine::renderWorld(World world)
     {
         for (int j = 0; j < world.getWidth(); j++)
         {
-            auto xpath = resource_map[(TileType) data[i][j]];
+            auto tt = (TileType) data[i][j];
+            auto xpath = resource_map[tt];
             if (!xpath.empty())
             {
                 const auto rect = World::cellRect(
                         i, j, window->GetDrawableHeight(), window->GetDrawableWidth(),
                         world.getHeight(), world.getWidth());
-                auto pSurface = loader.getSVG(xpath)->getSurface(rect->w, rect->h);
+                if (entity_map.find(tt) == entity_map.end())
+                {
+                    entity_map[tt] = loader.getSVG(xpath)->getBitmap(rect->w, rect->h);
+                }
+                auto *const pSurface = new SDL2pp::Surface(
+                        static_cast<void *>(entity_map[tt]->data()),
+                        rect->w, rect->h, 32, entity_map[tt]->stride(),
+                        0x000000ff, 0x0000ff00, 0x00ff0000, 0xff000000);
                 auto texture = SDL2pp::Texture(*renderer, *pSurface);
                 renderer->Copy(texture, NullOpt, SDL2pp::Point{rect->x, rect->y});
                 delete pSurface;

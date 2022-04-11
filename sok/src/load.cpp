@@ -6,8 +6,8 @@
 
 #include <fstream>
 #include <memory>
-#include <vector>
 #include <stdexcept>
+#include <vector>
 
 void Loader::load_items()
 {
@@ -45,10 +45,11 @@ void Loader::load_items()
 std::shared_ptr<DataSVG> Loader::getSVG(const std::string &xpath)
 {
     auto ext = split_ext(xpath);
-    auto vchar_ptr = read(xpath);
+    //auto vchar_ptr = read(xpath);
     if (ext == "svg")
     {
-        return std::make_shared<DataSVG>(DataSVG(*vchar_ptr));
+        //return std::make_shared<DataSVG>(DataSVG(*vchar_ptr));
+        return std::make_shared<DataSVG>("resources/" + xpath);
     } else
     {
         throw std::runtime_error("extension name not recognized: " + ext);

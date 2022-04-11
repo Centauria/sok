@@ -3,6 +3,7 @@
 #include "gamemap.h"
 #include "load.h"
 
+#include <memory>
 #include <SDL.h>
 #include <SDL2pp/SDL2pp.hh>
 
@@ -29,9 +30,10 @@ private:
             {Player,       "img/player.svg"},
             {Wall,         "img/wall.svg"},
     };
+    std::unordered_map<TileType, std::shared_ptr<lunasvg::Bitmap>> entity_map{};
 public:
     SDL2Engine() = default;
-    ~SDL2Engine() = default;
+    ~SDL2Engine();
     void init(int, bool, int, int);
     void run();
     void renderWorld(World world);
