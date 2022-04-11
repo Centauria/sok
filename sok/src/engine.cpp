@@ -40,6 +40,19 @@ void SDL2Engine::init(int displayID, bool is_fullscreen, int window_height, int 
 void SDL2Engine::run()
 {
     bool is_running = true;
+    std::cout << loader.getOGG("snd/work-loop.ogg")->to_string() << std::endl;
+//    auto music = loader.getOGG("snd/work-loop.ogg")->getMusic();
+//    mixer.PlayMusic(*music);
+//    mixer.PlayChannel(-1, *(loader.getOGG("snd/work-loop.ogg")->getChunk()));
+    int chan;
+    if ((chan = mixer.PlayChannel(0, SDL2pp::Chunk("resources/snd/work-loop.ogg"))) < 0)
+    {
+        std::cerr << "error playing audio" << std::endl;
+    } else
+    {
+        mixer.SetVolume(chan, MIX_MAX_VOLUME / 2);
+        std::cout << "good on chan " << chan << std::endl;
+    }
     SDL_Event event;
     while (is_running)
     {

@@ -21,3 +21,15 @@ public:
     explicit DataSVG(std::vector<char> data);
     [[nodiscard]] SDL2pp::Surface *getSurface(uint32_t width, uint32_t height) const;
 };
+
+class DataOGG : public Data
+{
+private:
+    std::vector<char> data;
+public:
+    explicit DataOGG(std::vector<char> data) : data(data)
+    {};
+    [[nodiscard]] std::shared_ptr<SDL2pp::Music> getMusic();
+    [[nodiscard]] std::shared_ptr<SDL2pp::Chunk> getChunk();
+    std::string to_string();
+};

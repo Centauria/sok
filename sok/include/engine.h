@@ -12,17 +12,22 @@ class SDL2Engine
 {
 private:
     World world{"maps/2.txt"};
-    SDL sdl{SDL_INIT_VIDEO};
+    SDL sdl{SDL_INIT_VIDEO | SDL_INIT_AUDIO};
+    SDLMixer mix{MIX_INIT_OGG | MIX_INIT_MP3};
     std::shared_ptr<Window> window;
     std::shared_ptr<Renderer> renderer;
+    Mixer mixer{44100,
+                MIX_DEFAULT_FORMAT,
+                MIX_DEFAULT_CHANNELS,
+                128};
     Loader loader{"resources.pac"};
     std::unordered_map<TileType, std::string> resource_map{
-            {Target,       "target.svg"},
-            {TargetPlayer, "target-player.svg"},
-            {TargetBox,    "target-box.svg"},
-            {Box,          "box.svg"},
-            {Player,       "player.svg"},
-            {Wall,         "wall.svg"},
+            {Target,       "img/target.svg"},
+            {TargetPlayer, "img/target-player.svg"},
+            {TargetBox,    "img/target-box.svg"},
+            {Box,          "img/box.svg"},
+            {Player,       "img/player.svg"},
+            {Wall,         "img/wall.svg"},
     };
 public:
     SDL2Engine() = default;

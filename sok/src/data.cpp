@@ -22,3 +22,35 @@ SDL2pp::Surface *DataSVG::getSurface(uint32_t width, uint32_t height) const
             0x000000ff, 0x0000ff00, 0x00ff0000, 0xff000000);
     return surface;
 }
+
+std::shared_ptr<SDL2pp::Music> DataOGG::getMusic()
+{
+    auto container_ops = SDL2pp::ContainerRWops<std::vector<char>>(data);
+    auto ops = SDL2pp::RWops{std::move(container_ops)};
+    return std::make_shared<SDL2pp::Music>(SDL2pp::Music(ops, MUS_OGG));
+}
+
+std::shared_ptr<SDL2pp::Chunk> DataOGG::getChunk()
+{
+    auto container_ops = SDL2pp::ContainerRWops<std::vector<char>>(data);
+    auto ops = SDL2pp::RWops{std::move(container_ops)};
+    return std::make_shared<SDL2pp::Chunk>(SDL2pp::Chunk(ops));
+}
+
+std::string DataOGG::to_string()
+{
+    auto result = "data size: " + std::to_string(data.size()) + " [";
+    for (auto i = 0; i < 3; i++)
+    {
+        result += std::to_string(data[i]);
+        result += ",";
+    }
+    result += "... ,";
+    for (auto i = 1; i < 4; i++)
+    {
+        result += std::to_string(data[data.size() - i]);
+        result += ",";
+    }
+    result += "]";
+    return result;
+}

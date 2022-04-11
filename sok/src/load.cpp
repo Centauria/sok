@@ -55,6 +55,19 @@ std::shared_ptr<DataSVG> Loader::getSVG(const std::string &xpath)
     }
 }
 
+std::shared_ptr<DataOGG> Loader::getOGG(const std::string &xpath)
+{
+    auto ext = split_ext(xpath);
+    auto vchar_ptr = read(xpath);
+    if (ext == "ogg")
+    {
+        return std::make_shared<DataOGG>(DataOGG(*vchar_ptr));
+    } else
+    {
+        throw std::runtime_error("extension name not recognized: " + ext);
+    }
+}
+
 std::shared_ptr<std::vector<char>> Loader::read(const std::string &xpath)
 {
     std::ifstream loader(path, std::ios::in | std::ios::binary);
