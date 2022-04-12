@@ -43,8 +43,7 @@ void SDL2Engine::init(int displayID, bool is_fullscreen, int window_height, int 
 void SDL2Engine::run()
 {
     bool is_running = true;
-    auto music = Music("resources/snd/work-loop.mp3");
-    mixer.PlayMusic(music);
+    playOGG("snd/work-loop.ogg");
     SDL_Event event;
     while (is_running)
     {

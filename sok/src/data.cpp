@@ -36,15 +36,16 @@ SDL2pp::Surface *DataSVG::getSurface(uint32_t width, uint32_t height) const
 
 std::vector<uint8_t> DataOGG::getData()
 {
-    return std::vector<uint8_t>(data);
+    return std::vector<uint8_t>{data};
 }
 
 SDL2pp::Music DataOGG::getMusic()
 {
-    auto data_copy = std::vector<uint8_t>(data);
+    auto data_copy = std::vector<uint8_t>{data};
     auto container_ops = SDL2pp::ContainerRWops<std::vector<uint8_t>>(data_copy);
-    auto ops = SDL2pp::RWops{&container_ops};
-    return SDL2pp::Music(ops, MUS_OGG);
+    auto ops = SDL2pp::RWops{std::move(container_ops)};
+    auto music = SDL2pp::Music{ops, MUS_OGG};
+    return music;
 }
 
 std::shared_ptr<SDL2pp::Chunk> DataOGG::getChunk()

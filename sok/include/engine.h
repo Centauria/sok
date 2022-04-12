@@ -41,3 +41,9 @@ public:
     void renderWorld(World world);
     [[nodiscard]] Loader getLoader() const;
 };
+
+#define playOGG(xpath) auto data = loader.getOGG((xpath))->getData(); \
+auto container_ops = SDL2pp::ContainerRWops<std::vector<uint8_t>>(data); \
+auto ops = SDL2pp::RWops{std::move(container_ops)}; \
+auto music = Music{ops, MUS_OGG}; \
+mixer.PlayMusic(music);
