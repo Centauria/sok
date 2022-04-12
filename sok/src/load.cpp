@@ -4,11 +4,12 @@
 
 #include "load.h"
 
+#include <filesystem>
 #include <fstream>
 #include <memory>
 #include <stdexcept>
 #include <vector>
-#include <filesystem>
+
 
 namespace fs = std::filesystem;
 
@@ -55,7 +56,7 @@ std::shared_ptr<DataSVG> Loader::getSVG(const std::string &xpath, bool use_pac)
             auto vchar_ptr = read(xpath);
             return std::make_shared<DataSVG>(DataSVG(*vchar_ptr));
         } else
-            return std::make_shared<DataSVG>(fs::path("resources/") / xpath);
+            return std::make_shared<DataSVG>(DataSVG{(fs::path("resources/") / xpath).string()});
     } else
     {
         throw std::runtime_error("extension name not recognized: " + ext);
@@ -72,7 +73,7 @@ std::shared_ptr<DataOGG> Loader::getOGG(const std::string &xpath, bool use_pac)
             auto vchar_ptr = read(xpath);
             return std::make_shared<DataOGG>(DataOGG(*vchar_ptr));
         } else
-            return std::make_shared<DataOGG>(DataOGG(fs::path("resources/") / xpath));
+            return std::make_shared<DataOGG>(DataOGG{(fs::path("resources/") / xpath).string()});
     } else
     {
         throw std::runtime_error("extension name not recognized: " + ext);
