@@ -20,7 +20,7 @@ std::vector<ResourceItem> scan(const std::string &path)
     for (auto &e: fs::recursive_directory_iterator(path))
     {
         auto fp = e.path();
-        if (std::regex_search(fp.string(), std::regex{"\\.DS_Store$"}))
+        if (std::regex_search(fp.string(), std::regex{R"(\.DS_Store$)"}))
         {
             continue;
         }
@@ -28,9 +28,10 @@ std::vector<ResourceItem> scan(const std::string &path)
         {
             auto size = fs::file_size(fp);
             auto xpath = std::regex_replace(fp.string(), std::regex{"^" + path}, "");
-            ltrim(xpath, "/\\");
+            ltrim(xpath, R"(/\)");
             std::cout << fp << " -> " << xpath << std::endl;
-            ResourceItem item{xpath, size, offset};
+            fs::path f_xpath{xpath};
+            ResourceItem item{f_xpath.generic_string(), size, offset};
             res.push_back(item);
             offset += size;
         }
