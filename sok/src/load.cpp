@@ -8,6 +8,9 @@
 #include <memory>
 #include <stdexcept>
 #include <vector>
+#include <filesystem>
+
+namespace fs = std::filesystem;
 
 void Loader::load_items()
 {
@@ -42,27 +45,34 @@ void Loader::load_items()
     }
 }
 
-std::shared_ptr<DataSVG> Loader::getSVG(const std::string &xpath)
+std::shared_ptr<DataSVG> Loader::getSVG(const std::string &xpath, bool use_pac)
 {
     auto ext = split_ext(xpath);
-    //auto vchar_ptr = read(xpath);
     if (ext == "svg")
     {
-        //return std::make_shared<DataSVG>(DataSVG(*vchar_ptr));
-        return std::make_shared<DataSVG>("resources/" + xpath);
+        if (use_pac)
+        {
+            auto vchar_ptr = read(xpath);
+            return std::make_shared<DataSVG>(DataSVG(*vchar_ptr));
+        } else
+            return std::make_shared<DataSVG>(fs::path("resources/") / xpath);
     } else
     {
         throw std::runtime_error("extension name not recognized: " + ext);
     }
 }
 
-std::shared_ptr<DataOGG> Loader::getOGG(const std::string &xpath)
+std::shared_ptr<DataOGG> Loader::getOGG(const std::string &xpath, bool use_pac)
 {
     auto ext = split_ext(xpath);
-    auto vchar_ptr = read(xpath);
     if (ext == "ogg")
     {
-        return std::make_shared<DataOGG>(DataOGG(*vchar_ptr));
+        if (use_pac)
+        {
+            auto vchar_ptr = read(xpath);
+            return std::make_shared<DataOGG>(DataOGG(*vchar_ptr));
+        } else
+            return std::make_shared<DataOGG>(DataOGG(fs::path("resources/") / xpath));
     } else
     {
         throw std::runtime_error("extension name not recognized: " + ext);
@@ -76,7 +86,7 @@ std::shared_ptr<std::vector<uint8_t>> Loader::read(const std::string &xpath)
     auto offset = initial_offset + item.start_offset;
     loader.seekg(offset, loader.beg);
     std::vector<uint8_t> vc(item.filesize);
-    if (!loader.read((char *) (vc.data()), item.filesize))
+    if (!loader.read(reinterpret_cast<char *> (vc.data()), item.filesize))
     {
         throw std::runtime_error("error reading data from offset" + std::to_string(offset));
     }
