@@ -6,7 +6,6 @@
 #include <string>
 #include <vector>
 #include <filesystem>
-#include "blobify/blobify.hpp"
 
 struct ResourceItem
 {
